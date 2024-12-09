@@ -21,7 +21,7 @@ export default function GenreBooksPage({ books }) {
 }
 
 export async function getStaticPaths() {
-  const genres = getAllGenres();
+  const genres = await getAllGenres();
   const paths = genres.map((genre) => ({
     params: { id: genre.id.toString() },
   }));
@@ -34,7 +34,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
   const { params } = context;
-  const books = getBooksByGenre(params.id);
+  //context.params.id is the id of the genre
+  const books = await getBooksByGenre(params.id);
 
   return {
     props: {

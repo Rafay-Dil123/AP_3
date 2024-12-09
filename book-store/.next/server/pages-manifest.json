@@ -3,7 +3,12 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
+  "/api/books": "pages/api/books.js",
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
   "/books/[id]": "pages/books/[id].js",
+  "/api/books/[id]": "pages/api/books/[id].js",
+  "/api/genres/[id]": "pages/api/genres/[id].js",
   "/books/[id]/author": "pages/books/[id]/author.js",
-  "/books": "pages/books.js"
+  "/api/authors/[id]": "pages/api/authors/[id].js",
+  "/login": "pages/login.js"
 }

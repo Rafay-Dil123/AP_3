@@ -38,6 +38,17 @@ export async function getStaticProps() {
     const allBooks = await getAllbooks();
     const genres = await getAllGenres();
     
+    if(!allBooks || !genres) {
+        return {
+            redirect: {
+                destination: '/error',
+                permanent: false
+            }
+        };
+    }
+
+    
+
     return {
         props: {
             books: allBooks,

@@ -1,11 +1,20 @@
 import { getBookById, getAuthorById, getAllbooks } from "@/helpers/api-utils";
 import { useRouter } from "next/router";
+import { useAuth } from '@/context/AuthContext';
 import styles from "@/styles/AuthorDetail.module.css";
+import { useEffect } from "react";
+
 
 export default function AuthorDetail({ author }) {
   const router = useRouter();
+  const { user } = useAuth(); // Check user from context
 
-  // Handle loading state when fallback is true
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+    }
+  }, [user, router]); // Only runs if `user` or `router` changes
+
   if (router.isFallback) {
     return <div className={styles.loading}>Loading...</div>;
   }
@@ -27,31 +36,31 @@ export async function getStaticProps(context) {
   const bookId = params.id;
 
   // Get the book details to find the author ID
-  const book = getBookById(bookId);
+  const book = await getBookById(bookId);
 
   if (!book) {
     return {
-      notFound: true, // 404 if book doesn't exist
+      notFound: true,
     };
   }
 
   // Fetch the author using the authorId from the book
-  const author = getAuthorById(book.authorId);
+  const author = await getAuthorById(book.authorId);
 
   return {
     props: {
-      author, // Pass author data as props
+      author,
     },
   };
 }
 
 export async function getStaticPaths() {
   // Generate paths for each book's author page
-  const books = getAllbooks();
+  const books = await getAllbooks();
   const paths = books.map((book) => ({ params: { id: String(book.id) } }));
 
   return {
-    paths, // Pre-generate author detail pages based on book IDs
-    fallback: true, // Render new paths on demand if they haven't been generated yet
+    paths,
+    fallback: true,
   };
 }

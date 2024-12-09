@@ -47,8 +47,8 @@ export default function BookDetail({ book,genra }) {
 export async function getStaticProps(context) {
   const { params } = context;
   const bookId = params.id;
-  const book = getBookById(bookId);
-  const genra=getGenreById(book.genreId);
+  const book = await getBookById(bookId);
+  const genra=await getGenreById(book.genreId);
   if (!book) {
     return {
       notFound: true,
@@ -64,7 +64,7 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
-  const books = getAllbooks();
+  const books = await getAllbooks();
   const paths = books.map((book) => ({ 
     params: { id: book.id.toString() } 
   }));

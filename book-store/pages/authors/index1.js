@@ -6,9 +6,10 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function AuthorsPage() {
   // Fetch data with SWR
-  const { data: authors, error } = useSWR("/api/authors", fetcher);
+  const { data: authors, error, isLoading} = useSWR("/api/authors", fetcher);
 
   // Handle loading and error states
+  if(isLoading) return <div className={styles.loadingContainer}>Loading...</div>;
   if (error) return <div className={styles.errorContainer}>Failed to load authors.</div>;
   if (!authors) return <div className={styles.loadingContainer}>Loading...</div>;
 
